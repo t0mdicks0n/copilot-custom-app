@@ -15,99 +15,96 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   // you run `yarn dev`
   console.log("HELLO FROM THE IFRAME!");
   console.log({ data });
+  console.log({ searchParams });
+
+  // Dummy data as per the image (this should come from your API or session data)
+  const ongoingBids = [
+    { 
+      title: "Riksrevisionen",
+      answered: 1, totalQuestions: 5, deadline: "2024-10-15", 
+      status: "Obligatorisk", progress: 20
+    },
+    { 
+      title: "Hebygårdar",
+      answered: 5, totalQuestions: 5, deadline: "2024-10-21", 
+      status: "Genomförd", progress: 100
+    },
+  ];
+
+  const unansweredTenders = [
+    { 
+      title: "Stockholms Stad (Västerort)",
+      value: "0.3 MSEK/år", location: "Stockholm", 
+      deadline: "2024-10-18", area: "40 m²", tags: ["Trappor", "Skola", "Kontor"]
+    },
+    { 
+      title: "Linköpings kommun (Ånestadsskolan)",
+      value: "2.5 MSEK/år", location: "Östergötland", 
+      deadline: "2024-10-18", area: "10k m²", tags: ["Idrottshall", "Skola"]
+    },
+    { 
+      title: "Svenska Institutet (FM-tjänster)",
+      value: "1.9 MSEK/år", location: "Stockholm", 
+      deadline: "2024-11-01", area: "1.9k m²", tags: ["Kontor"]
+    },
+    { 
+      title: "Norrköpings kommun",
+      value: "4 MSEK/år", location: "Östergötland", 
+      deadline: "2024-11-04", area: "27k m²", tags: ["Idrottshall", "Skola"]
+    },
+  ];
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Welcome to the custom APP YOU FUCKER&nbsp;
-          {JSON.stringify(data)}
-          <code className="font-mono font-bold">
-            {data.client ? data.client.givenName : data.company?.name}
-          </code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://copilot.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/copilot_icon.png"
-              alt="Copilot Icon"
-              className="dark:invert"
-              width={24}
-              height={24}
-              priority
-            />
-          </a>
+      {/* Ongoing Bids Section */}
+      <div className="max-w-5xl w-full">
+        <h2 className="text-2xl font-bold">Pågående Anbud</h2>
+        <div className="space-y-4 mt-4">
+          {ongoingBids.map((bid, idx) => (
+            <div key={idx} className="p-4 border rounded-lg shadow">
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">{bid.title}</h3>
+                <button className="bg-blue-500 text-white p-2 rounded">Prisanalys</button>
+              </div>
+              <div className="text-gray-500">{bid.status}</div>
+              <div className="flex justify-between items-center mt-2">
+                <p>Deadline: {bid.deadline}</p>
+                <p>{bid.answered}/{bid.totalQuestions} Frågor Besvarade</p>
+              </div>
+              <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${bid.progress}%` }}></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/copilot_logo.png"
-          alt="Copilot Logo"
-          width={200}
-          height={50}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-3 lg:text-left">
-        <a
-          href="https://docs.copilot.com/reference"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find detailed information about the Copilot API.
-          </p>
-        </a>
-
-        <a
-          href="https://docs.copilot.com/docs"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn how to integrate a custom app into the Copilot platform.
-          </p>
-        </a>
-
-        <a
-          href="https://www.copilot.com/experts"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Explore{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            See our experts directory, and join to receive work opportunities
-            building on top of Copilot.
-          </p>
-        </a>
+      {/* Unanswered Tenders Section */}
+      <div className="max-w-5xl w-full mt-8">
+        <h2 className="text-2xl font-bold">Upphandlingar: Ej Besvarade</h2>
+        <div className="space-y-4 mt-4">
+          {unansweredTenders.map((tender, idx) => (
+            <div key={idx} className="p-4 border rounded-lg shadow">
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">{tender.title}</h3>
+                <p>{tender.value}</p>
+              </div>
+              <div className="text-gray-500">{tender.location}</div>
+              <div className="flex justify-between items-center mt-2">
+                <p>Deadline: {tender.deadline}</p>
+                <p>Area: {tender.area}</p>
+              </div>
+              <div className="flex space-x-2 mt-2">
+                {tender.tags.map((tag, tagIdx) => (
+                  <span key={tagIdx} className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <button className="mt-2 bg-gray-300 text-gray-800 p-2 rounded">Sammanfattning</button>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
